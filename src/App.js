@@ -15,7 +15,7 @@ export default function App() {
       setPosts([...response]);
     };
     fetchData();
-  });
+  }, [posts]);
 
   // deletePost
   const deletePostHandler = async (id) => {

@@ -22,12 +22,13 @@ const Post = ({ id, content, created, deletePostHandler, editPostHandler }) => {
   return (
     <div
       className="card w-50 ml-auto mr-auto"
-      style={{ position: "relative", margin: "0 auto 20px" }}
+      style={{ position: "relative", margin: "0 auto 20px", cursor: "pointer" }}
+      data-id={id}
     >
       <div className="card-body">
         <div>{created}</div>
         <div style={{ margin: "5px", textAlign: "center", fontWeight: "bold" }}>
-          {isEdit ? "Edition" : null}
+          {isEdit ? "Editing..." : null}
         </div>
         <p
           style={
