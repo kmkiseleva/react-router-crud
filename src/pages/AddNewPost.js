@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const AddNewPost = ({ addNewPostHandler }) => {
   const [inputValue, setInputValue] = useState("");
+  const history = useHistory();
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -10,6 +12,7 @@ const AddNewPost = ({ addNewPostHandler }) => {
     }
     addNewPostHandler(inputValue);
     setInputValue("");
+    history.push("/");
   };
 
   const onChangeHandler = (e) => {

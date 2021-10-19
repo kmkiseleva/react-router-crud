@@ -13,14 +13,17 @@ let posts = [
   {
     id: 1,
     content: "New post about React",
+    created: "2021-10-15 12:10:00",
   },
   {
     id: 2,
-    content: "New post about React Redux",
+    content: "Another post - about React Redux",
+    created: "2021-09-03 12:10:00",
   },
   {
     id: 3,
-    content: "New post abоut React Router",
+    content: "Third post abоut React Router",
+    created: "2021-08-03 12:20:00",
   },
 ];
 

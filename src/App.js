@@ -15,39 +15,55 @@ export default function App() {
       setPosts([...response]);
     };
     fetchData();
-  }, []);
+  });
 
   // deletePost
   const deletePostHandler = async (id) => {
-    // не работает!
+    // выкидывает ошибку Uncaught (in promise) SyntaxError: Unexpected end of JSON input
     await createRequest({ id, method: "DELETE" });
-    const response = await createRequest({ method: "get" });
-    setPosts([...response]);
+    setPosts((prevState) => {
+      const filteredPosts = prevState.filter((o) => o.id !== id);
+      return [...filteredPosts];
+    });
 
-    // работает!
+    // работает без ошибки!
     // fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
     //   method: "DELETE",
     // }).then(() => {
-    //   setPosts((prevState) => {s
+    //   setPosts((prevState) => {
     //     const filteredPosts = prevState.filter((o) => o.id !== id);
     //     return [...filteredPosts];
     //   });
     // });
   };
 
+  // editPost
+  const editPostHandler = async (id, content) => {
+    await createRequest({
+      id,
+      payload: content,
+      method: "PUT",
+    });
+
+    setPosts((prevState) => {
+      const filteredPosts = prevState.filter((o) => o.id !== id);
+      const editPost = { id, content };
+      return [...filteredPosts, editPost];
+    });
+  };
+
   // addNewPost
   const addNewPostHandler = async (post) => {
-    console.log(post);
-    // try {
-    //   const payload = {
-    //     content: posts,
-    //   };
-    //   await createRequest({ payload, method: "post" });
-    //   const response = await createRequest({ method: "get" });
-    //   setPosts([...response]);
-    // } catch (e) {
-    //   return <p>Error: {e}</p>;
-    // }
+    try {
+      const payload = {
+        content: post,
+      };
+      await createRequest({ payload, method: "post" });
+      const response = await createRequest({ method: "get" });
+      setPosts([...response]);
+    } catch (e) {
+      return <p>Error: {e}</p>;
+    }
   };
 
   return (
@@ -56,7 +72,11 @@ export default function App() {
         <Route
           path="/"
           render={() => (
-            <Posts posts={posts} deletePostHandler={deletePostHandler} />
+            <Posts
+              posts={posts}
+              deletePostHandler={deletePostHandler}
+              editPostHandler={editPostHandler}
+            />
           )}
           exact
         />
