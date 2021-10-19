@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useCallback } from "react";
 
-const Post = ({ id, content }) => {
+const Post = ({ id, content, deletePostHandler }) => {
+  const onDeletePost = useCallback(() => deletePostHandler(id), [id]);
+
   return (
     <div
       className="card w-50 ml-auto mr-auto"
-      data-id={id}
       style={{ position: "relative", margin: "0 auto 20px" }}
     >
       <div className="card-body">
@@ -20,6 +21,7 @@ const Post = ({ id, content }) => {
               type="button"
               className="btn btn-warning"
               style={{ marginLeft: 15 }}
+              onClick={onDeletePost}
             >
               Delete
             </button>

@@ -11,18 +11,20 @@ app.use(koaBody({ json: true }));
 
 let posts = [
   {
-    id: "1",
-    content: "Новый пост о React",
+    id: 1,
+    content: "New post about React",
   },
   {
-    id: "2",
-    content: "Новый пост о React Redux",
+    id: 2,
+    content: "New post about React Redux",
   },
   {
-    id: "3",
-    content: "Новый пост о React Router",
+    id: 3,
+    content: "New post abоut React Router",
   },
 ];
+
+let nextId = 4;
 
 const router = new Router();
 
@@ -41,7 +43,8 @@ router.get("/posts", async (ctx, next) => {
 });
 
 router.post("/posts", async (ctx, next) => {
-  posts.push({ ...ctx.request.body, created: Date.now() });
+  let data = JSON.parse(ctx.request.body);
+  posts.push({ ...data, id: nextId++, created: Date.now() });
   ctx.response.status = 204;
 });
 
@@ -54,7 +57,8 @@ router.put("/posts/:id", async (ctx, next) => {
 });
 
 router.delete("/posts/:id", async (ctx, next) => {
-  const index = posts.findIndex((o) => o.id === ctx.params.id);
+  const postId = Number(ctx.params.id);
+  const index = posts.findIndex((o) => o.id === postId);
   if (index !== -1) {
     posts.splice(index, 1);
   }

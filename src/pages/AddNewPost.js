@@ -1,4 +1,22 @@
-const AddNewPost = () => {
+import { useState } from "react";
+
+const AddNewPost = ({ addNewPostHandler }) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    if (inputValue === "") {
+      return;
+    }
+    addNewPostHandler(inputValue);
+    setInputValue("");
+  };
+
+  const onChangeHandler = (e) => {
+    const { value } = e.target;
+    setInputValue(value);
+  };
+
   return (
     <div
       className="card w-50"
@@ -7,7 +25,7 @@ const AddNewPost = () => {
       <div />
       <h5 className="card-header">Add new post</h5>
       <div className="card-body">
-        <form>
+        <form onSubmit={onSubmitHandler}>
           <div className="mb-3">
             <label htmlFor="post" className="form-label">
               Please enter your text
@@ -15,8 +33,10 @@ const AddNewPost = () => {
             <input
               type="text"
               className="form-control"
-              id="post"
+              id={Math.random()}
               placeholder="Your text..."
+              onChange={onChangeHandler}
+              value={inputValue}
             />
           </div>
           <button type="submit" className="btn btn-warning">
