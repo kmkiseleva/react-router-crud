@@ -26,10 +26,16 @@ const Post = ({ id, content, created, deletePostHandler, editPostHandler }) => {
     >
       <div className="card-body">
         <div>{created}</div>
+        <div style={{ margin: "5px", textAlign: "center", fontWeight: "bold" }}>
+          {isEdit ? "Edition" : null}
+        </div>
         <p
           style={
             isEdit
-              ? { border: "1px solid red", padding: "10px" }
+              ? {
+                  border: "3px solid red",
+                  padding: "10px",
+                }
               : { border: "1px solid black", padding: "10px" }
           }
           className="card-text"
