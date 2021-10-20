@@ -1,20 +1,14 @@
 import { useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
 
 const Post = ({ id, content, created, deletePostHandler, editPostHandler }) => {
   const [isEdit, setIsEdit] = useState(false);
-  const history = useHistory();
 
   const onDeletePost = useCallback(() => deletePostHandler(id), [id]);
-
-  const onEditPost = () => {
-    setIsEdit((prevState) => !prevState);
-    history.replace("/");
-  };
+  const onEditPost = () => setIsEdit((prevState) => !prevState);
 
   const onSubmitHandler = (e) => {
     if (e.key === "Enter") {
-      onEditPost(e.target.value);
+      editPostHandler(id, e.target.textContent);
       setIsEdit(false);
     }
   };

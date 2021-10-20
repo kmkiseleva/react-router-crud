@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { generate } from "shortid";
 
 const AddNewPost = ({ addNewPostHandler }) => {
   const [inputValue, setInputValue] = useState("");
@@ -10,7 +11,12 @@ const AddNewPost = ({ addNewPostHandler }) => {
     if (inputValue === "") {
       return;
     }
-    addNewPostHandler(inputValue);
+    const newPost = {
+      id: generate(),
+      content: inputValue,
+    };
+
+    addNewPostHandler(newPost);
     setInputValue("");
     history.push("/");
   };
