@@ -13,7 +13,7 @@ export default function App() {
   // getting all posts
   useEffect(() => {
     const fetchData = async () => {
-      const response = await createRequest({ method: "get" });
+      const response = await createRequest({ method: "GET" });
       setPosts([...response]);
     };
     fetchData();
@@ -33,21 +33,11 @@ export default function App() {
 
   // deletePost
   const deletePostHandler = (id) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      setPosts((prevState) => {
-        const filteredPosts = prevState.filter((o) => o.id !== id);
-        return [...filteredPosts];
-      });
+    createRequest({ id, method: "DELETE" });
+    setPosts((prevState) => {
+      const filteredPosts = prevState.filter((o) => o.id !== id);
+      return [...filteredPosts];
     });
-
-    // выкидывает ошибку Uncaught (in promise) SyntaxError: Unexpected end of JSON input ???
-    // await createRequest({ id, method: "DELETE" });
-    // setPosts((prevState) => {
-    //   const filteredPosts = prevState.filter((o) => o.id !== id);
-    //   return [...filteredPosts];
-    // });
   };
 
   // editPost

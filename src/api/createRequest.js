@@ -14,8 +14,10 @@ const createRequest = async ({ id, payload, method }) => {
     throw new Error("Something went wrong");
   }
 
-  const response = await request.json();
-  return response;
+  if (method !== "DELETE") {
+    const response = await request.json();
+    return response;
+  }
 };
 
 export default createRequest;
