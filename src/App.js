@@ -19,27 +19,6 @@ export default function App() {
     fetchData();
   }, []);
 
-  // deletePost
-  const deletePostHandler = async (id) => {
-    // выкидывает ошибку Uncaught (in promise) SyntaxError: Unexpected end of JSON input ???
-
-    // await createRequest({ id, method: "DELETE" });
-    // setPosts((prevState) => {
-    //   const filteredPosts = prevState.filter((o) => o.id !== id);
-    //   return [...filteredPosts];
-    // });
-
-    // работает без ошибки!
-    fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      setPosts((prevState) => {
-        const filteredPosts = prevState.filter((o) => o.id !== id);
-        return [...filteredPosts];
-      });
-    });
-  };
-
   // addNewPost
   const addNewPostHandler = async (payload) => {
     fetch(process.env.REACT_APP_BASE_URL, {
@@ -52,39 +31,55 @@ export default function App() {
       .then(() => history.replace("/"));
   };
 
+  // deletePost
+  const deletePostHandler = (id) => {
+    fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setPosts((prevState) => {
+        const filteredPosts = prevState.filter((o) => o.id !== id);
+        return [...filteredPosts];
+      });
+    });
+
+    // выкидывает ошибку Uncaught (in promise) SyntaxError: Unexpected end of JSON input ???
+    // await createRequest({ id, method: "DELETE" });
+    // setPosts((prevState) => {
+    //   const filteredPosts = prevState.filter((o) => o.id !== id);
+    //   return [...filteredPosts];
+    // });
+  };
+
   // editPost
   const editPostHandler = async (id, content) => {
-    // SyntaxError: Unexpected end of JSON input + баги после перезагрузки ???
-    await createRequest({
-      id,
-      payload: content,
+    fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
       method: "PUT",
-    });
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content }),
+    })
+      .then(() => {
+        setPosts((prevState) => {
+          const filteredPosts = prevState.filter((o) => o.id !== id);
+          const editPost = { id, content };
+          return [...filteredPosts, editPost];
+        });
+      })
+      .then(() => history.replace("/"));
 
-    setPosts((prevState) => {
-      const filteredPosts = prevState.filter((o) => o.id !== id);
-      const editPost = { id, content };
-      return [...filteredPosts, editPost];
-    });
-
-    history.replace("/");
-
-    // другой способ - тоже с ошибкой
-    // fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
+    // SyntaxError: Unexpected end of JSON input + баги после перезагрузки ???
+    // await createRequest({
+    //   id,
+    //   payload: content,
     //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ content }),
-    // })
-    //   .then(() => {
-    //     setPosts((prevState) => {
-    //       const filteredPosts = prevState.filter((o) => o.id !== id);
-    //       const editPost = { id, content };
-    //       return [...filteredPosts, editPost];
-    //     });
-    //   })
-    //   .then(() => history.replace("/"));
+    // });
+    // setPosts((prevState) => {
+    //   const filteredPosts = prevState.filter((o) => o.id !== id);
+    //   const editPost = { id, content };
+    //   return [...filteredPosts, editPost];
+    // });
+    // history.replace("/");
   };
 
   return (

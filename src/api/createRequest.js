@@ -1,7 +1,6 @@
 const createRequest = async ({ id, payload, method }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const requestURL =
-    method === "DELETE" || method === "PUT" ? baseURL + `${id}` : baseURL;
+  const requestURL = method === "DELETE" ? baseURL + `${id}` : baseURL;
 
   const request = await fetch(requestURL, {
     method: method,

@@ -52,8 +52,9 @@ router.post("/posts", async (ctx, next) => {
 });
 
 router.put("/posts/:id", async (ctx, next) => {
-  const findpost = posts.find((o) => o.id === ctx.params.id);
-  const filteredPosts = posts.filter((o) => o.id !== ctx.params.id);
+  const postId = Number(ctx.params.id);
+  const findpost = posts.find((o) => o.id === postId);
+  const filteredPosts = posts.filter((o) => o.id !== postId);
   const editPost = { ...findpost, content: ctx.request.body.content };
   posts = [...filteredPosts, editPost];
   ctx.response.status = 204;
