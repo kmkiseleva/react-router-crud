@@ -41,35 +41,22 @@ export default function App() {
   };
 
   // editPost
-  const editPostHandler = async (id, content) => {
-    fetch(`${process.env.REACT_APP_BASE_URL}${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ content }),
-    })
-      .then(() => {
-        setPosts((prevState) => {
-          const filteredPosts = prevState.filter((o) => o.id !== id);
-          const editPost = { id, content };
-          return [...filteredPosts, editPost];
-        });
-      })
-      .then(() => history.replace("/"));
+  const editPostHandler = (data) => {
+    const { id, content } = data;
 
-    // SyntaxError: Unexpected end of JSON input + баги после перезагрузки ???
-    // await createRequest({
-    //   id,
-    //   payload: content,
-    //   method: "PUT",
-    // });
-    // setPosts((prevState) => {
-    //   const filteredPosts = prevState.filter((o) => o.id !== id);
-    //   const editPost = { id, content };
-    //   return [...filteredPosts, editPost];
-    // });
-    // history.replace("/");
+    createRequest({
+      id,
+      payload: content,
+      method: "PUT",
+    });
+
+    setPosts((prevState) => {
+      const filteredPosts = prevState.filter((o) => o.id !== id);
+      const editPost = { id, content };
+      return [...filteredPosts, editPost];
+    });
+
+    history.replace("/");
   };
 
   return (

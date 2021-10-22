@@ -1,6 +1,7 @@
 const createRequest = async ({ id, payload, method }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const requestURL = method === "DELETE" ? baseURL + `${id}` : baseURL;
+  const requestURL =
+    method === "DELETE" || method === "PUT" ? baseURL + `${id}` : baseURL;
 
   const request = await fetch(requestURL, {
     method: method,
@@ -14,7 +15,7 @@ const createRequest = async ({ id, payload, method }) => {
     throw new Error("Something went wrong");
   }
 
-  if (method !== "DELETE") {
+  if (method !== "DELETE" && method !== "PUT") {
     const response = await request.json();
     return response;
   }

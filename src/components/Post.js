@@ -8,7 +8,11 @@ const Post = ({ id, content, created, deletePostHandler, editPostHandler }) => {
 
   const onSubmitHandler = (e) => {
     if (e.key === "Enter") {
-      editPostHandler(id, e.target.textContent);
+      const data = {
+        id: id,
+        content: e.target.textContent,
+      };
+      editPostHandler(data);
       setIsEdit(false);
     }
   };

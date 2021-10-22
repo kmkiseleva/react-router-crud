@@ -52,10 +52,11 @@ router.post("/posts", async (ctx, next) => {
 });
 
 router.put("/posts/:id", async (ctx, next) => {
+  const content = JSON.parse(ctx.request.body);
   const postId = Number(ctx.params.id);
   const findpost = posts.find((o) => o.id === postId);
   const filteredPosts = posts.filter((o) => o.id !== postId);
-  const editPost = { ...findpost, content: ctx.request.body.content };
+  const editPost = { ...findpost, content };
   posts = [...filteredPosts, editPost];
   ctx.response.status = 204;
 });
