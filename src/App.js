@@ -4,11 +4,14 @@ import { useHistory } from "react-router-dom";
 import createRequest from "./api/createRequest";
 import Layout from "./components/Layout";
 import Posts from "./pages/Posts";
+import Post from "./components/Post";
+import singlePost from "./components/singlePost";
 import AddNewPost from "./pages/AddNewPost";
 
 export default function App() {
   const history = useHistory();
   const [posts, setPosts] = useState([]);
+  const SinglePostHOC = singlePost(Post);
 
   // getting all posts
   useEffect(() => {
@@ -38,24 +41,22 @@ export default function App() {
       const filteredPosts = prevState.filter((o) => o.id !== id);
       return [...filteredPosts];
     });
+    history.replace("/");
   };
 
   // editPost
   const editPostHandler = (data) => {
     const { id, content } = data;
-
     createRequest({
       id,
       payload: content,
       method: "PUT",
     });
-
     setPosts((prevState) => {
       const filteredPosts = prevState.filter((o) => o.id !== id);
       const editPost = { id, content };
       return [...filteredPosts, editPost];
     });
-
     history.replace("/");
   };
 
@@ -76,6 +77,15 @@ export default function App() {
         <Route
           path="/posts/new"
           render={() => <AddNewPost addNewPostHandler={addNewPostHandler} />}
+        />
+        <Route
+          path="/posts/:id"
+          render={() => (
+            <SinglePostHOC
+              deletePostHandler={deletePostHandler}
+              editPostHandler={editPostHandler}
+            />
+          )}
         />
       </Switch>
     </Layout>

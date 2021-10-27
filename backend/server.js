@@ -32,8 +32,8 @@ let nextId = 4;
 const router = new Router();
 
 router.get("/posts/:id", async (ctx, next) => {
-  const { id } = ctx.params;
-  const findPost = posts.find((o) => o.id === id);
+  const postId = Number(ctx.params.id);
+  const findPost = posts.find((o) => o.id === postId);
   if (findPost) {
     ctx.response.body = findPost;
   } else {
